@@ -1,67 +1,73 @@
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
+
+import org.xhtmlrenderer.css.parser.property.PrimitivePropertyBuilders.Height;
+
+import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
 
 public class State {
 	
 	boolean whitePlayerMove;
 	
-	Environment environment = Environment.GetInstance();
+	Environment environment;
+	int WHITE = 0, BLACK=1;
 	
-	List<Pawn> whitePawns, blackPawns;
+	public BitSet[][] board;
+	
+	
+
 	
 	public State() {
 		
-		whitePlayerMove = true;
+		this.environment  = Environment.GetInstance();
+		
+		
+		this.board = new BitSet[environment.width][environment.height];
+		
+		for(int x = 0; x < environment.width; x++) {
 			
-		whitePawns = new ArrayList<Pawn>();
-		
-		for(int i = 0; i < environment.width; i++) {
-			whitePawns.add(new Pawn(i+1, 1));
-			whitePawns.add(new Pawn(i+1, 2));
+			for(int y = 0; y < environment.height; y ++) {
+			
+				this.board[x][y] = new BitSet(2);
+				
+				if(y == 0 || y == 1 ) {
+					this.board[x][y].set(WHITE, true);
+				} else if (y == environment.height-1 || y == environment.height-2){
+					this.board[x][y].set(BLACK, true);
+				}
+				
+			}
+			
 		}
 		
-		blackPawns = new ArrayList<Pawn>();
-		
-		for(int i = 0; i < environment.width; i++) {
-			whitePawns.add(new Pawn(i+1, environment.height));
-			whitePawns.add(new Pawn(i+1, environment.height-1));
-		}
-		
-		
+		System.out.println(this.board);
 		
 	}
 	
-	public State(List<Pawn> whitePawns2, List<Pawn> blackPawns2) {
-		// TODO Auto-generated constructor stub
-		whitePawns = new ArrayList<Pawn>();
-		blackPawns = new ArrayList<Pawn>();
-		
-		for(Pawn wp : whitePawns2) {
-			this.whitePawns.add(wp.clone());
-		}
-		for(Pawn bp: blackPawns2) {
-			this.blackPawns.add(bp.clone());
-		}
-		
-	}
+	
 
 	public State clone() {
 		
 		// return a new State with the same properties as this one
-		
-		State state = new State(whitePawns, blackPawns);
-		
-		return state;
+		return null;
 		
 	}
 
-	public State ApplyAction() {
+	public List<String> legalActions(){
+				
+		List<String> rlist = new ArrayList<String>();
+		
+		return null;
+	}
+	
+	public State ApplyAction( String action ) {
 			
 		State newState = this.clone();
 	
-		this.whitePlayerMove = !this.whitePlayerMove;
+		newState.whitePlayerMove = !this.whitePlayerMove;
 		
-		return null;
+		return newState;
 	}
 	
 	

@@ -54,6 +54,7 @@ public class GamePlayer extends NanoHTTPD {
 			agent.init(role, width, height, playclock);
 		} catch(Exception e) {
 			System.err.println("Can not parse start message: " + e);
+			e.printStackTrace();
 			System.exit(-1);
 		}
 	}

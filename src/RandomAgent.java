@@ -20,6 +20,13 @@ public class RandomAgent implements Agent
 		this.height = height;
 		// TODO: add your own initialization code here
 		
+		Environment environment = Environment.GetInstance();
+		environment.height = this.height;
+		environment.width = this.width;
+		
+		State state = new State();
+		
+		
     }
 
 	// lastMove is null the first time nextAction gets called (in the initial state)
