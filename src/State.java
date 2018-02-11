@@ -11,37 +11,52 @@ public class State {
 	boolean whitePlayerMove;
 	
 	Environment environment;
-	int WHITE = 0, BLACK=1;
 	
-	public BitSet[][] board;
+	// to reference 1D as 2D: i = row * row + col
 	
-	
-
+	public BitSet[] board;
+	public BitSet whites;
+	public BitSet blacks;
+	int len;
 	
 	public State() {
 		
 		this.environment  = Environment.GetInstance();
 		
-		
-		this.board = new BitSet[environment.width][environment.height];
-		
-		for(int x = 0; x < environment.width; x++) {
+		whites = new BitSet(len);
+		blacks = new BitSet(len);
+		this.board = new BitSet[2];
+		board[0] = whites;
+		board[1] = blacks;
+		len = environment.width * environment.height;
 			
-			for(int y = 0; y < environment.height; y ++) {
-			
-				this.board[x][y] = new BitSet(2);
-				
-				if(y == 0 || y == 1 ) {
-					this.board[x][y].set(WHITE, true);
-				} else if (y == environment.height-1 || y == environment.height-2){
-					this.board[x][y].set(BLACK, true);
+		for(int i = 0; i < 2; i++) {	
+			for(int j = 0; j < len; j++) {
+				if(i == 0 && j < environment.width * 2 ) {
+					this.board[i].set(j);
+				} else if (i == 1 && j >= (len) - (2*environment.width)){
+					this.board[i].set(j);
 				}
-				
-			}
-			
+			}				
 		}
 		
-		System.out.println(this.board);
+		StringBuilder w = new StringBuilder();
+		StringBuilder b = new StringBuilder();
+
+		for(int i = 0; i < board.length; i++) {	
+	        for(int j = 0; j < len;  j++ ) {
+	        	if(i == 0) {
+	        		w.append( board[i].get(j) == true ? 1: 0 ); 
+	        	}
+	        	else {
+	        		b.append( board[i].get(j) == true ? 1: 0 ); 
+	        	}
+	        }
+		}
+	       		   
+        System.out.println( "White pawns: {" + w + "}" );
+        System.out.println( "Black pawns: {" + b + "}" );
+		//System.out.println(this.board);
 		
 	}
 	
