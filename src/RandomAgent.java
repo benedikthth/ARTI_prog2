@@ -56,7 +56,8 @@ public class RandomAgent implements Agent
    			state = state.ApplyAction(new Action(x1, y1, x2, y2));
    			
    			state.board.print();
-    		
+   			
+    		System.out.println(state.getScore(Tile.BLACK));
     	}
 		
     	// update turn (above that line it myTurn is still for the previous state)
@@ -70,11 +71,10 @@ public class RandomAgent implements Agent
 			lms = (role.equals("white")) ?  state.legalMoves(Tile.WHITE): state.legalMoves(Tile.BLACK);
 			
 			int randex = (int)Math.floor( ( double) lms.size() * Math.random() );
-			Action ax = lms.get(randex);
-			//state = state.ApplyAction(ax);
-			String dingdong = ax.toString();
-			System.out.println(dingdong);
-			return dingdong;
+			
+			return lms.get(randex).toString();
+			
+			//return "( move 4 3 4 4)";
 			
 		} else {
 			
