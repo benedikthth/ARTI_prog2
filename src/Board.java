@@ -1,7 +1,9 @@
 
 public interface Board {
 	
-	
+	/*
+	 * BOARDS ARE BY RULE ZERO INDEXED. THEY RECEIVE 1 INDEXED INSTRUCTIONS AND RETURN 1 INDEXED INTSRUCTIONS
+	 */
 	
 	public Tile get(int x, int y);
 	

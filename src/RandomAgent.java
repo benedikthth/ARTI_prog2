@@ -10,6 +10,11 @@ public class RandomAgent implements Agent
 	private boolean myTurn; // whether it is this agent's turn or not
 	private int width, height; // dimensions of the board
 	
+	
+	//my own shit
+	private State state;
+	
+	
 	/*
 		init(String role, int playclock) is called once before you have to select the first action. Use it to initialize the agent. role is either "white" or "black" and playclock is the number of seconds after which nextAction must return.
 	*/
@@ -25,17 +30,19 @@ public class RandomAgent implements Agent
 		environment.height = this.height;
 		environment.width = this.width;
 		
-		State state = new State();
+		state = new State();
 		
-		List<Action> something = state.legalMoves(Tile.WHITE);
+		//List<Action> something = state.legalMoves(Tile.WHITE);
 		
-		System.out.println(something);
+		//System.out.println(something);
 		
     }
 
 	// lastMove is null the first time nextAction gets called (in the initial state)
     // otherwise it contains the coordinates x1,y1,x2,y2 of the move that the last player did
     public String nextAction(int[] lastMove) {
+    	
+    	
     	if (lastMove != null) {
     		int x1 = lastMove[0], y1 = lastMove[1], x2 = lastMove[2], y2 = lastMove[3];
     		String roleOfLastPlayer;
@@ -45,30 +52,34 @@ public class RandomAgent implements Agent
     			roleOfLastPlayer = "black";
     		}
    			System.out.println(roleOfLastPlayer + " moved from " + x1 + "," + y1 + " to " + x2 + "," + y2);
-    		// TODO: 1. update your internal world model according to the action that was just executed
+   			
+   			state = state.ApplyAction(new Action(x1, y1, x2, y2));
+   			
+   			state.board.print();
     		
     	}
 		
     	// update turn (above that line it myTurn is still for the previous state)
 		myTurn = !myTurn;
 		if (myTurn) {
+			
 			// TODO: 2. run alpha-beta search to determine the best move
-
-			// Here we just construct a random move (that will most likely not even be possible),
-			// this needs to be replaced with the actual best move.
-			int x1,y1,x2,y2;
-			x1 = random.nextInt(width)+1;
-			x2 = x1 + random.nextInt(3)-1;
-			if (role.equals("white")) {
-				y1 = random.nextInt(height-1);
-				y2 = y1 + 1;
-			} else {
-				y1 = random.nextInt(height-1)+2;
-				y2 = y1 - 1;
-			}
-			return "(move " + x1 + " " + y1 + " " + x2 + " " + y2 + ")";
+	
+			List<Action> lms;
+			
+			lms = (role.equals("white")) ?  state.legalMoves(Tile.WHITE): state.legalMoves(Tile.BLACK);
+			
+			int randex = (int)Math.floor( ( double) lms.size() * Math.random() );
+			Action ax = lms.get(randex);
+			//state = state.ApplyAction(ax);
+			String dingdong = ax.toString();
+			System.out.println(dingdong);
+			return dingdong;
+			
 		} else {
+			
 			return "noop";
+		
 		}
 	}
 

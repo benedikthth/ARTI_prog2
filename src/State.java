@@ -10,31 +10,47 @@ public class State {
 	
 	boolean whitePlayerMove;
 	
-	Environment environment;
+	Environment environment  = Environment.GetInstance();;
 	
 	// to reference 1D as 2D: i = row * row + col
+	
+	
+	
+	//STATES ARE 1 INDEXED
+	
+	
 	
 	public Board board;
 	
 	int len;
 	
+	
 	public State() {
 		
-		this.environment  = Environment.GetInstance();
 		
 		this.board = new BitsetBoard();
 		
-		this.board.print();
+		
 
 	}
 	
-	
+	public State(Board cboard) {
+		
+		
+		this.board = cboard.clone();
+		
+
+	}
 
 	public State clone() {
 		
 		// return a new State with the same properties as this one
-		return null;
 		
+		State newState = new State(this.board.clone());
+		
+		return newState;
+		
+
 	}
 
 	
@@ -52,9 +68,8 @@ public class State {
 		
 		List<Action> legalActions = new ArrayList<Action>();
 		
-		for(int y = 0; y < environment.height; y++) {
-			for(int x = 0; x < environment.width; x++) {
-				
+		for(int y = 1; y <= environment.height; y++) {
+			for(int x = 1; x <= environment.width; x++) {
 				
 				
 				if(board.get(x, y) != player) {
@@ -66,7 +81,6 @@ public class State {
 				// x, y = location of a pawn.
 				
 				
-				
 				//white goes up. black goes down.
 				int direction = (player == Tile.WHITE)? 1: -1;
 				
@@ -74,7 +88,7 @@ public class State {
 				
 				//check for diagonal left.
 				//There must be a tile of the type opponent 
-				if(x != 0) {
+				if(x != 1) {
 					if(board.get(x-1, y+direction) == opponent) {
 						legalActions.add(new Action(x, y, x-1, y+direction)) ;
 					}
@@ -88,7 +102,7 @@ public class State {
 				
 				//diagonal right
 				//there must be an opponent there for this move to be legal
-				if(x != environment.width-1) {
+				if(x != environment.width) {
 					if(board.get(x+1, y+direction) == opponent) {
 						legalActions.add(new Action(x, y, x+1, y+direction)) ;
 					}
@@ -108,8 +122,8 @@ public class State {
 	public State ApplyAction( Action action ) {
 			
 		State newState = this.clone();
-	
-		newState.whitePlayerMove = !this.whitePlayerMove;
+		
+		newState.board.applyAction(action);
 		
 		return newState;
 	}

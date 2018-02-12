@@ -1,16 +1,17 @@
 import java.util.BitSet;
 
+import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
+
 public class BitsetBoard implements Board {
 	
-	private Environment env;
+	private Environment env = Environment.GetInstance();
 	
 	private BitSet[][] board;
 	
-	int whiteIndex = 0,
-		blackIndex = 1;
+	static int whiteIndex = 0;
+	static int blackIndex = 1;
 	
 	public BitsetBoard() {
-		env  = Environment.GetInstance();
 		board = new BitSet[env.width][env.height];
 		
 		
@@ -37,26 +38,44 @@ public class BitsetBoard implements Board {
 	}
 	
 	public BitsetBoard(BitSet[][] b) {
+		
 		board = b;
 	}
 	
 	@Override
 	public Tile get(int x, int y) {
 		
-		if(board[x][y].get(whiteIndex)) {
-			return Tile.WHITE;
-		} else if (board[x][y].get(blackIndex)) {
-			return Tile.BLACK;
-		} else {
-			return Tile.EMPTY;
-		}
+		x -= 1;
+		y -= 1;
 		
-	}
+		try {
+			if( board[x][y].get(whiteIndex) && !board[x][y].get(blackIndex)) {
+				return Tile.WHITE;
+			}
+			else if ( board[x][y].get(blackIndex) && !board[x][y].get(whiteIndex) ) {
+				return Tile.BLACK;
+			}
+			else if(!board[x][y].get(whiteIndex) && !board[x][y].get(blackIndex)) {
+				return Tile.EMPTY;
+			} else {
+				System.out.println("TERMINAL FAILURE. BOTH BITS SET IN BITSETBOARD:GET");
+				return null;
+			}
+		} catch(ArrayIndexOutOfBoundsException ex) {
+			ex.printStackTrace();
 
+			return null;
+		}
+	}
+	
 	@Override
 	public Board applyAction(Action action) {
 		
-		
+		// actions are 1 indexed, this board is 0 indexed.
+		int ox = action.originX -1;
+		int oy = action.originY -1;
+		int dx = action.destinationX -1;
+		int dy = action.destinationY -1;
 		
 		//todo: if get(action.originx, action.originy) empty throw;
 		
@@ -70,9 +89,9 @@ public class BitsetBoard implements Board {
 		BitsetBoard newBoard = new BitsetBoard(this.board.clone());
 		
 		//remove piece in original position
-		newBoard.put(action.originX, action.originY, Tile.EMPTY);
+		newBoard.put(ox, oy, Tile.EMPTY);
 		//add piece to new board in new position.
-		newBoard.put(action.destinationX, action.destinationY, t);
+		newBoard.put(dx, dy, t);
 		
 		// TODO Auto-generated method stub
 		return newBoard;
@@ -106,6 +125,7 @@ public class BitsetBoard implements Board {
 	@Override
 	public void put(int x, int y, Tile tile) {
 		
+		
 		switch(tile) {
 		case BLACK:
 			setBlack(x, y);
@@ -129,10 +149,10 @@ public class BitsetBoard implements Board {
 		
 		
 		
-		for(int y = env.height-1; y >= 0; y--) {
+		for(int y = env.height; y >= 1; y--) {
 
 			
-			for(int x = 0; x < env.width; x++) {
+			for(int x = 1; x <= env.width; x++) {
 				
 				switch(get(x, y)) {
 				
