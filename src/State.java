@@ -6,6 +6,8 @@ import org.xhtmlrenderer.css.parser.property.PrimitivePropertyBuilders.Height;
 
 import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
 
+import sun.invoke.empty.Empty;
+
 public class State {
 	
 	boolean whitePlayerMove;
@@ -54,7 +56,62 @@ public class State {
 	}
 
 	
+	public int getScore(Tile player) {
+		
+		int numberOfPawnsForPlayer = 0; 
+		int numberOfPawnsForOpponent = 0;
+		
+		
+		//the black wants to go down. white up.
+		int furthestPlayerPawnPosition = (player == Tile.WHITE) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+		int furthestOpponentPawnPosition = (player == Tile.WHITE) ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+		
+		
+		for(int y = 1; y <= environment.height; y++) {
+			for(int x = 1; x <= environment.width; x++) {
+				
+				Tile t = board.get(x, y);
+				
+				if(t == Tile.EMPTY) {
+					continue;
+				}
+				
+				if(t == player) {
+					
+					numberOfPawnsForPlayer ++;
+					
+					if(player == Tile.WHITE) {
+						furthestPlayerPawnPosition = Math.max(furthestPlayerPawnPosition, y);
+					} else {
+						furthestPlayerPawnPosition = Math.min(furthestPlayerPawnPosition, y);
+					}
+					
+				} else {
+					// tile belongs to opponent.
+					
+					numberOfPawnsForOpponent ++;
+					
+					if(player == Tile.WHITE) {
+						furthestOpponentPawnPosition = Math.min(furthestOpponentPawnPosition, y);
+					} else {
+						furthestOpponentPawnPosition = Math.max(furthestOpponentPawnPosition, y);
+					}
+					
+				}
+				
+			}
+		}
+		
+		//inverse the distance.
+		if(player == Tile.BLACK) {
+			furthestPlayerPawnPosition = environment.height +1 - furthestPlayerPawnPosition;
+		} else {
+			furthestOpponentPawnPosition = environment.height + 1 - furthestOpponentPawnPosition;
+		}
+		
+		return /*numberOfPawnsForPlayer +*/ furthestPlayerPawnPosition;
 	
+	};
 	
 	
 	public List<Action> legalMoves(Tile player) {
