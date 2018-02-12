@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Random;
 
 public class RandomAgent implements Agent
@@ -26,6 +27,9 @@ public class RandomAgent implements Agent
 		
 		State state = new State();
 		
+		List<Action> something = state.legalMoves(Tile.WHITE);
+		
+		System.out.println(something);
 		
     }
 
