@@ -13,35 +13,20 @@ public class State {
 	boolean whitePlayerMove;
 	
 	Environment environment  = Environment.GetInstance();;
-	
-	// to reference 1D as 2D: i = row * row + col
-	
-	
-	
+
 	//STATES ARE 1 INDEXED
-	
-	
-	
+
 	public Board board;
+	List<Action> legalActions;
 	
 	int len;
 	
-	
-	public State() {
-		
-		
-		this.board = new BitsetBoard();
-		
-		
-
+	public State() {	
+		this.board = new BitsetBoard();	
 	}
 	
 	public State(Board cboard) {
-		
-		
 		this.board = cboard.clone();
-		
-
 	}
 
 	public State clone() {
@@ -123,7 +108,7 @@ public class State {
 		
 		Tile opponent = (player == Tile.WHITE)? Tile.BLACK: Tile.WHITE;
 		
-		List<Action> legalActions = new ArrayList<Action>();
+		legalActions = new ArrayList<Action>();
 		
 		for(int y = 1; y <= environment.height; y++) {
 			for(int x = 1; x <= environment.width; x++) {
@@ -171,11 +156,6 @@ public class State {
 		return legalActions;
 	}
 	
-	
-	
-	
-	
-	
 	public State ApplyAction( Action action ) {
 			
 		State newState = this.clone();
@@ -185,7 +165,26 @@ public class State {
 		return newState;
 	}
 	
+	//If either B or W has made it's way accross the board, a goal has been met
+	public boolean goalState() {
+		for(int i = 0; i < environment.width; i++) {
+			if(board.get(0,i) == Tile.BLACK || board.get(environment.height, i) == Tile.WHITE) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
+	// All values should be from MAX's point of view
+	public int eval() {
+		// num pieces of each type & num possible moves & num squares controlled
+		return 0;
+	}
+	
+	public boolean terminalState() {
+		return this.legalActions.isEmpty();
+	}
+
 	
 	
 }
