@@ -11,6 +11,7 @@ public class HandWrittenAgent implements Agent {
 	private int playclock; // this is how much time (in seconds) we have before nextAction needs to return a move
 	private boolean myTurn; // whether it is this agent's turn or not
 	private int width, height; // dimensions of the board
+	int bestVal;
 	
 	
 	//my own shit
@@ -38,8 +39,7 @@ public class HandWrittenAgent implements Agent {
     }
 
 	public String nextAction(int[] lastMove) {
-    	
-    	
+    	   	
     	if (lastMove != null) {
     		int x1 = lastMove[0], y1 = lastMove[1], x2 = lastMove[2], y2 = lastMove[3];
     		String roleOfLastPlayer;
@@ -60,6 +60,16 @@ public class HandWrittenAgent implements Agent {
     	// update turn (above that line it myTurn is still for the previous state)
 		myTurn = !myTurn;
 		if (myTurn) {
+			// have 2 different AB searches: one returns a move and the other returns a score
+			/*
+			Action bestMove;
+			try {
+				depth++;
+				bestMove = alphaBeta(..., depth);
+			} catch(TimeoutException) {
+				return "Action";
+			}
+			*/
 			
 			// TODO: 2. run alpha-beta search to determine the best move
 	
@@ -79,6 +89,62 @@ public class HandWrittenAgent implements Agent {
 		
 		}
 	}
+	/* Returns best value
+	// Call: minimaxValue = miniMax(initialState, MaxPlayer)
+	int miniMax( State s, Tile p) {
+		if(s.terminalState()) {
+			return s.getScore(p);
+		}
+		
+		List<Action> lms;
+		lms = (role.equals("white")) ?  state.legalMoves(Tile.WHITE): state.legalMoves(Tile.BLACK);
+		List<State> successors;
+		for(int i = 0; i < lms.length; i++) {
+			successors.add(ApplyAction(lms[i]);
+		}
+		
+		
+		if(p == MaxPlayer) {	// MAXplayer wants to maximize his score
+			bestVal = -100000;
+			for(State su : successors) {
+				value = miniMax(su, MinPlayer);
+			    bestVal = max(value, bestVal);
+			}
+		}
+		else {					// MINplayer wants to minimize MAX's score
+			bestVal = 100000;
+			for(all successors su of s) {
+				value = miniMax(su, MaxPlayer);
+			    bestVal = min(value, bestVal);
+			}
+		}
+		return bestVal;
+	}
+	*/
+	/*// returns best action
+	// Call: minimaxAction = miniMax(initialState, MaxPlayer)
+		Action miniMax( State s, Tile p) {
+			if(s.terminalState()) {
+				return s.getScore(p);
+			}
+			
+			if(p == MaxPlayer) {	// MAXplayer wants to maximize his score
+				bestVal = -100000;
+				for(all successors su of s) {
+					value = miniMax(su, MinPlayer);
+				    bestVal = max(value, bestVal);
+				}
+			}
+			else {					// MINplayer wants to minimize MAX's score
+				bestVal = 100000;
+				for(all successors su of s) {
+					value = miniMax(su, MaxPlayer);
+				    bestVal = min(value, bestVal);
+				}
+			}
+			return bestVal;
+		}
+	*/
 
 	// is called when the game is over or the match is aborted
 	@Override
