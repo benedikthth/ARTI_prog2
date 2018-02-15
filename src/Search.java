@@ -25,7 +25,7 @@ public class Search {
 		
 		Action bestAction = null;
 		
-		try {
+	
 			
 			if(maximizing) {
 				
@@ -63,9 +63,7 @@ public class Search {
 				
 			}
 			
-		} catch (IllegalMoveException ex) {
-			ex.printStackTrace();
-		}
+		
 		
 		return bestAction;
 		
@@ -92,7 +90,7 @@ public class Search {
 		int bestScore = (maximizing)? Integer.MIN_VALUE: Integer.MAX_VALUE;
 		
 		//this will throw an illegalmove exception if the actions accesses an empty tile.
-		try {
+		
 			for(Action a : legalMoves) {
 				
 				if(maximizing) {
@@ -104,9 +102,7 @@ public class Search {
 				
 				
 			}
-		} catch (IllegalMoveException ex) {
-			ex.printStackTrace();
-		}
+		
 		
 		return bestScore;
 		

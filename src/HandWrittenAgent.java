@@ -59,12 +59,9 @@ public class HandWrittenAgent implements Agent {
    			
    			//update the opponents move to our state.
    			if(!myTurn) { 
-   				try {
-					state = state.ApplyAction(new Action(x1, y1, x2, y2));
-				} catch (IllegalMoveException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+   				
+				state = state.ApplyAction(new Action(x1, y1, x2, y2));
+				
    			}
    		
    			
@@ -91,20 +88,22 @@ public class HandWrittenAgent implements Agent {
 			*/
 			
 			
-			Action a = adversarySearch.MinMaxSearch(state, 5, true, true);
+			Action a = adversarySearch.MinMaxSearch(state.clone(), 5, true, true);
 			
+			System.out.println("-|-|-|-|-|-|-|-|-|-|-|-|");
 			System.out.println("Action: " + a);
 			state.print();
+
+			System.out.println("~~~~~");
 			
+			System.out.println("hello");
+			State s = state.ApplyAction(a);
+			this.state = s;
+				
 			
-			try {
-				state = state.ApplyAction(a);
-			} catch (IllegalMoveException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
+			state.print();
+
+			System.out.println("-|-|-|-|-|-|-|-|-|-|-|-|");
 			return a.toString();
 			
 		} else {

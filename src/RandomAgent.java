@@ -54,12 +54,9 @@ public class RandomAgent implements Agent
    			System.out.println(roleOfLastPlayer + " moved from " + x1 + "," + y1 + " to " + x2 + "," + y2);
    			
    			
-   			try {
+   			
 				state = state.ApplyAction(new Action(x1, y1, x2, y2));
-			} catch (IllegalMoveException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
    			
    			state.board.print();
    			

@@ -38,7 +38,22 @@ public class BitsetBoard implements Board {
 	
 	public BitsetBoard(BitSet[][] b) {
 		
-		board = b;
+		board = new BitSet[env.width][env.height];
+		
+		for(int x = 0; x < env.width; x++) {
+			for(int y = 0; y < env.height; y++) {
+				
+				board[x][y] = new BitSet(2);
+				
+				boolean white = b[x][y].get(whiteIndex);
+				boolean black = b[x][y].get(blackIndex);
+				
+				board[x][y].set(whiteIndex, white);
+				board[x][y].set(blackIndex, black);
+				
+			}
+		}
+		
 	}
 	
 	@Override
@@ -68,7 +83,7 @@ public class BitsetBoard implements Board {
 	}
 	
 	@Override
-	public Board applyAction(Action action) throws IllegalMoveException {
+	public Board applyAction(Action action) { // throws IllegalMoveException {
 		
 		// actions are 1 indexed, this board is 0 indexed.
 		int ox = action.originX -1;
@@ -87,7 +102,7 @@ public class BitsetBoard implements Board {
 			
 			print();
 			System.out.println("-------------------------------------------");
-			throw new IllegalMoveException();
+			//throw new IllegalMoveException();
 		
 		}
 		
@@ -98,6 +113,10 @@ public class BitsetBoard implements Board {
 		//add piece to new board in new position.
 		newBoard.put(dx+1, dy+1, t);
 		
+		/*print();
+		System.out.println("Becomes:");
+		newBoard.print();
+		*/
 		// TODO Auto-generated method stub
 		return newBoard;
 	}

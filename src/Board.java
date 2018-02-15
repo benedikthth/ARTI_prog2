@@ -14,6 +14,6 @@ public interface Board {
 	
 	void print();
 
-	Board applyAction(Action action) throws IllegalMoveException;
+	Board applyAction(Action action) ;
 	
 }

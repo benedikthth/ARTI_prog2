@@ -1,0 +1,20 @@
+LOG 1518729926498 [L9]: <ERR> (in GamePlayer) Got start message while already busy playing a game: ignoring.
+LOG 1518729926520 [L9]: <ERR> (in GamePlayer) Got play message not intended for current game: ignoring.
+LOG 1518729926544 [L9]: <ERR> (in GamePlayer) Got play message not intended for current game: ignoring.
+LOG 1518729926593 [L9]: <ERR> (in GamePlayer) Got play message not intended for current game: ignoring.
+LOG 1518729926629 [L9]: <ERR> (in GamePlayer) Got play message not intended for current game: ignoring.
+LOG 1518729926652 [L9]: <ERR> (in GamePlayer) Got play message not intended for current game: ignoring.
+LOG 1518729926674 [L9]: <ERR> (in GamePlayer) Got play message not intended for current game: ignoring.
+LOG 1518729926693 [L9]: <ERR> (in GamePlayer) Got play message not intended for current game: ignoring.
+LOG 1518729926714 [L9]: <ERR> (in GamePlayer) Got play message not intended for current game: ignoring.
+LOG 1518729926732 [L9]: <ERR> (in GamePlayer) Got play message not intended for current game: ignoring.
+LOG 1518729926749 [L9]: <ERR> (in GamePlayer) Got play message not intended for current game: ignoring.
+LOG 1518729926768 [L9]: <ERR> (in GamePlayer) Got play message not intended for current game: ignoring.
+LOG 1518729926787 [L9]: <ERR> (in GamePlayer) Got play message not intended for current game: ignoring.
+LOG 1518729926803 [L9]: <ERR> (in GamePlayer) Got play message not intended for current game: ignoring.
+LOG 1518729926822 [L9]: <ERR> (in GamePlayer) Got play message not intended for current game: ignoring.
+LOG 1518729926841 [L9]: <ERR> (in GamePlayer) Got play message not intended for current game: ignoring.
+LOG 1518729926860 [L9]: <ERR> (in GamePlayer) Got play message not intended for current game: ignoring.
+LOG 1518729926878 [L9]: <ERR> (in GamePlayer) Got play message not intended for current game: ignoring.
+LOG 1518729926895 [L9]: <ERR> (in GamePlayer) Got play message not intended for current game: ignoring.
+LOG 1518729926913 [L9]: <ERR> (in GamePlayer) Got stop message not intended for current game: ignoring.

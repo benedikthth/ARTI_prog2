@@ -22,19 +22,10 @@ public class State {
 	}
 	
 	public State(Board cboard) {
-		this.board = cboard;//.clone();
+		this.board = cboard.clone();
 	}
 
-	public State clone() {
-		
-		// return a new State with the same properties as this one
-		
-		State newState = new State(this.board.clone());
-		
-		return newState;
-		
-
-	}
+	
 
 	
 	public int getScore(Tile player) {
@@ -154,19 +145,36 @@ public class State {
 			}
 		}
 		
+		for(Action a : legalActions) {
+			
+			
+				State s = ApplyAction(a);
+			
+			
+		}
+		
 		return legalActions;
 	}
 	
-	public State ApplyAction( Action action ) throws IllegalMoveException {
+	public State ApplyAction( Action action ) { // throws IllegalMoveException {
 			
 		State newState = this.clone();
 		
 		
-			
-		newState.board.applyAction(action);
+		newState.board = newState.board.applyAction(action);
 			
 		
 		return newState;
+	}
+	
+	
+	public State clone() {
+		
+		// return a new State with the same properties as this one
+		State newState = new State(this.board);
+		return newState;
+		
+
 	}
 	
 	//If either B or W has made it's way accross the board, that state is terminal. 
@@ -174,9 +182,7 @@ public class State {
 		
 		for(int i = 1; i <= environment.width; i++) {
 			if(board.get(i, 1) == Tile.BLACK || board.get(i, environment.height) == Tile.WHITE) {
-				System.out.println("State is terminal: ");
-				this.print();
-				System.out.println("0-0-0-0-0-0-0-0-0-0-0-0-0-0-0");
+				
 				return true;
 			}
 			
@@ -193,21 +199,6 @@ public class State {
 		this.board.print();
 	}
 	
-	/*
-	 * this is already done in statescore(player)'
-	// All values should be from MAX's point of view
-	public int eval() {
-		// num pieces of each type & num possible moves & num squares controlled
-		return 0;
-	}
 	
-	public boolean terminalState() {
-		//return this.legalActions.isEmpty();
-		
-		
-		
-	}
-
-	*/
 	
 }
