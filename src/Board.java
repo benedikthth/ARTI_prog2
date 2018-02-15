@@ -10,10 +10,10 @@ public interface Board {
 
 	Board clone();
 	
-	void put(int x, int y, Tile tile);
+	public void put(int x, int y, Tile tile);
 	
 	void print();
 
-	Board applyAction(Action action);
+	Board applyAction(Action action) throws IllegalMoveException;
 	
 }

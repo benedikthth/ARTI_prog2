@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="gamecontroller-cli.jar"/>
-	<classpathentry kind="lib" path="gamecontroller-gui.jar"/>
-	<classpathentry kind="lib" path="kiosk.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Benedikt/Desktop/ARTI_prog2/gamecontroller-cli.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Benedikt/Desktop/ARTI_prog2/gamecontroller-gui.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Benedikt/Desktop/ARTI_prog2/kiosk.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

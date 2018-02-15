@@ -1,32 +1,28 @@
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
 
-import org.xhtmlrenderer.css.parser.property.PrimitivePropertyBuilders.Height;
 
-import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
-
-import sun.invoke.empty.Empty;
 
 public class State {
 	
-	boolean whitePlayerMove;
+	//boolean whitePlayerMove;
 	
 	Environment environment  = Environment.GetInstance();;
 
 	//STATES ARE 1 INDEXED
 
 	public Board board;
+	/*
 	List<Action> legalActions;
 	
 	int len;
-	
+	*/
 	public State() {	
 		this.board = new BitsetBoard();	
 	}
 	
 	public State(Board cboard) {
-		this.board = cboard.clone();
+		this.board = cboard;//.clone();
 	}
 
 	public State clone() {
@@ -108,7 +104,12 @@ public class State {
 		
 		Tile opponent = (player == Tile.WHITE)? Tile.BLACK: Tile.WHITE;
 		
-		legalActions = new ArrayList<Action>();
+		List<Action> legalActions = new ArrayList<Action>();
+		
+		if(terminalState()) {
+			System.out.println("Fetching moves for terminalState. BAD");
+			return legalActions;
+		}
 		
 		for(int y = 1; y <= environment.height; y++) {
 			for(int x = 1; x <= environment.width; x++) {
@@ -156,25 +157,44 @@ public class State {
 		return legalActions;
 	}
 	
-	public State ApplyAction( Action action ) {
+	public State ApplyAction( Action action ) throws IllegalMoveException {
 			
 		State newState = this.clone();
 		
+		
+			
 		newState.board.applyAction(action);
+			
 		
 		return newState;
 	}
 	
-	//If either B or W has made it's way accross the board, a goal has been met
-	public boolean goalState() {
-		for(int i = 0; i < environment.width; i++) {
-			if(board.get(0,i) == Tile.BLACK || board.get(environment.height, i) == Tile.WHITE) {
+	//If either B or W has made it's way accross the board, that state is terminal. 
+	public boolean terminalState() {
+		
+		for(int i = 1; i <= environment.width; i++) {
+			if(board.get(i, 1) == Tile.BLACK || board.get(i, environment.height) == Tile.WHITE) {
+				System.out.println("State is terminal: ");
+				this.print();
+				System.out.println("0-0-0-0-0-0-0-0-0-0-0-0-0-0-0");
 				return true;
 			}
+			
+			
 		}
+		//board.print();
+		
 		return false;
+		
 	}
 	
+	
+	public void print() {
+		this.board.print();
+	}
+	
+	/*
+	 * this is already done in statescore(player)'
 	// All values should be from MAX's point of view
 	public int eval() {
 		// num pieces of each type & num possible moves & num squares controlled
@@ -182,9 +202,12 @@ public class State {
 	}
 	
 	public boolean terminalState() {
-		return this.legalActions.isEmpty();
+		//return this.legalActions.isEmpty();
+		
+		
+		
 	}
 
-	
+	*/
 	
 }

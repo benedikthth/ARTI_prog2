@@ -1,6 +1,5 @@
 import java.util.BitSet;
 
-import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
 
 public class BitsetBoard implements Board {
 	
@@ -69,7 +68,7 @@ public class BitsetBoard implements Board {
 	}
 	
 	@Override
-	public Board applyAction(Action action) {
+	public Board applyAction(Action action) throws IllegalMoveException {
 		
 		// actions are 1 indexed, this board is 0 indexed.
 		int ox = action.originX -1;
@@ -82,16 +81,22 @@ public class BitsetBoard implements Board {
 		Tile t = get(action.originX, action.originY);
 		
 		if(t == Tile.EMPTY) {
-			System.out.println("Illegal Move: " + action + " tried to move an empty dude");
-			return null;
+			
+			
+			System.out.println("Illegal Move: " + action + " for player tried to move an empty dude");
+			
+			print();
+			System.out.println("-------------------------------------------");
+			throw new IllegalMoveException();
+		
 		}
 		
 		BitsetBoard newBoard = new BitsetBoard(this.board.clone());
 		
 		//remove piece in original position
-		newBoard.put(ox, oy, Tile.EMPTY);
+		newBoard.put(ox+1, oy+1, Tile.EMPTY);
 		//add piece to new board in new position.
-		newBoard.put(dx, dy, t);
+		newBoard.put(dx+1, dy+1, t);
 		
 		// TODO Auto-generated method stub
 		return newBoard;
@@ -125,6 +130,8 @@ public class BitsetBoard implements Board {
 	@Override
 	public void put(int x, int y, Tile tile) {
 		
+		x-=1;
+		y-=1;
 		
 		switch(tile) {
 		case BLACK:

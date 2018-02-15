@@ -1,4 +1,3 @@
-import com.sun.javafx.geom.Vec2d;
 
 public class Coordinate {
 	
