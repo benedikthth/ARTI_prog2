@@ -63,23 +63,12 @@ public class State {
 				if(t == player) {
 					
 					numberOfPawnsForPlayer ++;
-					
-					if(player == Tile.WHITE) {
-						furthestPlayerPawnPosition = Math.max(furthestPlayerPawnPosition, y);
-					} else {
-						furthestPlayerPawnPosition = Math.min(furthestPlayerPawnPosition, y);
-					}
-					
+						
 				} else {
 					// tile belongs to opponent.
 					
 					numberOfPawnsForOpponent ++;
-					
-					if(player == Tile.WHITE) {
-						furthestOpponentPawnPosition = Math.min(furthestOpponentPawnPosition, y);
-					} else {
-						furthestOpponentPawnPosition = Math.max(furthestOpponentPawnPosition, y);
-					}
+				
 					
 				}
 				
@@ -93,11 +82,11 @@ public class State {
 		if(player == Tile.BLACK) {
 			
 			furthestOpponentPawnPosition = fwhite;
-			furthestPlayerPawnPosition = fblack;
+			furthestPlayerPawnPosition = environment.height +1 - fblack;
 			
 		} else {
 			
-			furthestOpponentPawnPosition = fblack;
+			furthestOpponentPawnPosition = environment.height +1 - fblack;
 			furthestPlayerPawnPosition = fwhite;
 		}
 		

@@ -69,7 +69,7 @@ public class Search {
 		
 	};
 	
-	public int Minimax(State state, int depth, boolean maximizing, boolean playerTurn) {
+	private int Minimax(State state, int depth, boolean maximizing, boolean playerTurn) {
 		//do not try to search further into a terminal state. 
 		if(state.terminalState() ) {
 			return state.getScore(player);
@@ -107,5 +107,135 @@ public class Search {
 		return bestScore;
 		
 	}
+	
+	
+	/**
+	 * Alpha-Beta pruning. Tries to maximize available moves for player.
+	 * @param initialState Initial state to begin the ab search from.
+	 * @param depth This is the depth to which to explore the tree.
+	 * @return An action representing (hopefully) the best possible action
+	 */
+	public Action abSearch(State initialState, int depth) {
+		//this really shouldn't ever be called for the opponent. it just does not make sense.
+		if(initialState.terminalState()) {
+			System.out.println("Search called on a terminal state.");
+			return null;
+		}
+		
+		boolean playerTurn = true;
+		
+		/**
+		 * This is the alpha value passed into the recursive helper function
+		 */
+		int alpha = Integer.MIN_VALUE;
+		/**
+		 * This is the beta value.
+		 */
+		int beta = Integer.MAX_VALUE;
+		
+		
+		/**
+		 * The legal moves for the agent.
+		 */
+		List<Action> actions = initialState.legalMoves(player);
+		
+		/**
+		 * this is the value we use to check if our
+		 * recursive helper function has found a better move
+		 */
+		/**
+		 * Store the best action here ... eventually
+		 */
+		Action bestAction = null;
+		
+		for(Action a : actions) {
+			//call our recursive helper.
+			int score = abSearch(initialState.ApplyAction(a), depth, alpha, beta, false, false);
+			
+			if(score > alpha) {
+				alpha = score;
+				bestAction = a;
+			}
+			
+		}
+		
+		return bestAction;
+		
+		
+	};
+	
+	private int abSearch(State state, int depth, int alpha, int beta, boolean maximizingplayer, boolean playerTurn) {
+		
+		/**
+		 * check if our depth is reached or if the current node is terminal;
+		 */
+		if(depth == 0 || state.terminalState()) {
+			return state.getScore(player);
+		}
+		
+		/**
+		 * Get appropriate legal moves for the current player.
+		 */
+		List<Action> legalMoves = (playerTurn)? state.legalMoves(player): state.legalMoves(opponent);
+		
+		int value = (maximizingplayer)? Integer.MIN_VALUE: Integer.MAX_VALUE;
+		
+		if(maximizingplayer) {
+			
+			for(Action a : legalMoves) {
+				
+				value = Math.max(value,
+						abSearch(state.ApplyAction(a),
+								depth-1, alpha,
+								beta, !maximizingplayer, !playerTurn
+								));
+				
+				alpha = Math.max(alpha, value);
+				
+				if(beta <= alpha) {
+					break;
+				}	
+			}
+			
+		} else {
+			
+			for(Action a : legalMoves) {
+				
+				value = Math.min(value, 
+						abSearch(state.ApplyAction(a), depth-1,
+								alpha, beta, !maximizingplayer, !playerTurn
+								));
+				
+				beta = Math.min(beta, value);
+				
+				if(beta <= alpha) {
+					break;
+				}
+				
+			}
+			
+			
+		}
+		
+		return value;
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
