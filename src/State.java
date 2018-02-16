@@ -26,7 +26,7 @@ public class State {
 	}
 
 	
-
+	public int furthestWhitePosition, furthestBlackPosition;
 	
 	public int getScore(Tile player) {
 		
@@ -38,6 +38,10 @@ public class State {
 		int furthestPlayerPawnPosition = (player == Tile.WHITE) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
 		int furthestOpponentPawnPosition = (player == Tile.WHITE) ? Integer.MAX_VALUE : Integer.MIN_VALUE;
 		
+		/**
+		 * cuck me
+		 */
+		int fblack = Integer.MAX_VALUE, fwhite=Integer.MIN_VALUE;
 		
 		for(int y = 1; y <= environment.height; y++) {
 			for(int x = 1; x <= environment.width; x++) {
@@ -47,6 +51,14 @@ public class State {
 				if(t == Tile.EMPTY) {
 					continue;
 				}
+				
+				
+				if(t==Tile.BLACK) {
+					fblack = Math.min(fblack, y);
+				} else {
+					fwhite = Math.max(fwhite, y);
+				}
+				
 				
 				if(t == player) {
 					
@@ -74,14 +86,23 @@ public class State {
 			}
 		}
 		
+		this.furthestBlackPosition = environment.height +1 - fblack;
+		this.furthestWhitePosition = fwhite;
+		
 		//inverse the distance.
 		if(player == Tile.BLACK) {
-			furthestPlayerPawnPosition = environment.height +1 - furthestPlayerPawnPosition;
+			
+			furthestOpponentPawnPosition = fwhite;
+			furthestPlayerPawnPosition = fblack;
+			
 		} else {
-			furthestOpponentPawnPosition = environment.height + 1 - furthestOpponentPawnPosition;
+			
+			furthestOpponentPawnPosition = fblack;
+			furthestPlayerPawnPosition = fwhite;
 		}
 		
-		return /*numberOfPawnsForPlayer +*/ furthestPlayerPawnPosition;
+		
+		return furthestPlayerPawnPosition - furthestOpponentPawnPosition;
 	
 	};
 	
@@ -97,14 +118,22 @@ public class State {
 		
 		List<Action> legalActions = new ArrayList<Action>();
 		
-		if(terminalState()) {
-			System.out.println("Fetching moves for terminalState. BAD");
-			return legalActions;
-		}
+		
 		
 		for(int y = 1; y <= environment.height; y++) {
 			for(int x = 1; x <= environment.width; x++) {
 				
+				if(y == 1) {
+					// if the bottom row contains a black player. the game is over. return empty list.
+					if(board.get(x, y) == Tile.BLACK) {
+						return new ArrayList<Action>();
+					}
+				} else if(y == environment.height) {
+					//if the top row contains a white player. the game is over. return empty list.
+					if(board.get(x, y) == Tile.WHITE){
+						return new ArrayList<Action>();
+					}
+				}
 				
 				if(board.get(x, y) != player) {
 					//no possible moves.
@@ -145,13 +174,6 @@ public class State {
 			}
 		}
 		
-		for(Action a : legalActions) {
-			
-			
-				State s = ApplyAction(a);
-			
-			
-		}
 		
 		return legalActions;
 	}
@@ -180,6 +202,10 @@ public class State {
 	//If either B or W has made it's way accross the board, that state is terminal. 
 	public boolean terminalState() {
 		
+		if(legalMoves(Tile.WHITE).isEmpty()) {
+			return true;
+		}
+		/*
 		for(int i = 1; i <= environment.width; i++) {
 			if(board.get(i, 1) == Tile.BLACK || board.get(i, environment.height) == Tile.WHITE) {
 				
@@ -188,6 +214,7 @@ public class State {
 			
 			
 		}
+		*/
 		//board.print();
 		
 		return false;

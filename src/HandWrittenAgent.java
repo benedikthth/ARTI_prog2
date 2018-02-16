@@ -88,22 +88,18 @@ public class HandWrittenAgent implements Agent {
 			*/
 			
 			
-			Action a = adversarySearch.MinMaxSearch(state.clone(), 5, true, true);
+			Action a = adversarySearch.MinMaxSearch(state.clone(), 10, true, true);
 			
-			System.out.println("-|-|-|-|-|-|-|-|-|-|-|-|");
-			System.out.println("Action: " + a);
-			state.print();
-
-			System.out.println("~~~~~");
 			
-			System.out.println("hello");
 			State s = state.ApplyAction(a);
-			this.state = s;
-				
 			
-			state.print();
-
-			System.out.println("-|-|-|-|-|-|-|-|-|-|-|-|");
+			this.state = s;
+			
+			this.state.print();
+			System.out.println("SC:: " + state.getScore(myRole)) ;
+			System.out.println("FW: "+this.state.furthestWhitePosition + ", FB: "+ this.state.furthestBlackPosition);
+			
+			
 			return a.toString();
 			
 		} else {

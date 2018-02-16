@@ -38,22 +38,24 @@ public class BitsetBoard implements Board {
 	
 	public BitsetBoard(BitSet[][] b) {
 		
+		
 		board = new BitSet[env.width][env.height];
 		
 		for(int x = 0; x < env.width; x++) {
 			for(int y = 0; y < env.height; y++) {
 				
-				board[x][y] = new BitSet(2);
-				
+				board[x][y] = (BitSet) b[x][y].clone();// new BitSet(2);
+				/*
 				boolean white = b[x][y].get(whiteIndex);
 				boolean black = b[x][y].get(blackIndex);
 				
 				board[x][y].set(whiteIndex, white);
 				board[x][y].set(blackIndex, black);
-				
+				*/
 			}
 		}
 		
+		//board = b.clone();
 	}
 	
 	@Override
@@ -109,9 +111,9 @@ public class BitsetBoard implements Board {
 		BitsetBoard newBoard = new BitsetBoard(this.board.clone());
 		
 		//remove piece in original position
-		newBoard.put(ox+1, oy+1, Tile.EMPTY);
+		newBoard._put(ox, oy, Tile.EMPTY);
 		//add piece to new board in new position.
-		newBoard.put(dx+1, dy+1, t);
+		newBoard._put(dx, dy, t);
 		
 		/*print();
 		System.out.println("Becomes:");
@@ -146,12 +148,14 @@ public class BitsetBoard implements Board {
 	
 	}
 
-	@Override
-	public void put(int x, int y, Tile tile) {
-		
-		x-=1;
-		y-=1;
-		
+	/**
+	 * DO NOT USE THIS OUTSIDE THE BitSetBoard CLASS!!!!
+	 * @param x X-coordinate in board space
+	 * @param y Y-coordinate in board space
+	 * @param Which tile should go into the board at that specified location.
+	 */
+	public void _put(int x, int y, Tile tile) {
+
 		switch(tile) {
 		case BLACK:
 			setBlack(x, y);
@@ -164,8 +168,19 @@ public class BitsetBoard implements Board {
 			break;
 		default:
 			break;
-		
 		}
+		
+	}
+	
+	
+	
+	@Override
+	public void put(int x, int y, Tile tile) {
+		
+		x-=1;
+		y-=1;
+		
+		_put(x, y, tile);
 
 	}
 
