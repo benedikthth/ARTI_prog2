@@ -27,11 +27,17 @@ public class State {
 
 	
 	public int furthestWhitePosition, furthestBlackPosition;
+	public int playerProtection;
+	public int opponentProtection;
+	public int playerWin;
 	
 	public int getScore(Tile player) {
 		
 		int numberOfPawnsForPlayer = 0; 
 		int numberOfPawnsForOpponent = 0;
+		playerProtection = 0;
+		opponentProtection = 0;
+		playerWin = 0;
 		
 		
 		//the black wants to go down. white up.
@@ -48,17 +54,21 @@ public class State {
 				
 				Tile t = board.get(x, y);
 				
+				// check for winning state
+				checkWin(t, player, y);
+				
 				if(t == Tile.EMPTY) {
 					continue;
 				}
 				
+				// check for number of protected pawns
+				checkProtection(t, player, x, y);
 				
 				if(t==Tile.BLACK) {
 					fblack = Math.min(fblack, y);
 				} else {
 					fwhite = Math.max(fwhite, y);
 				}
-				
 				
 				if(t == player) {
 					
@@ -68,8 +78,7 @@ public class State {
 					// tile belongs to opponent.
 					
 					numberOfPawnsForOpponent ++;
-				
-					
+								
 				}
 				
 			}
@@ -89,13 +98,84 @@ public class State {
 			furthestOpponentPawnPosition = environment.height +1 - fblack;
 			furthestPlayerPawnPosition = fwhite;
 		}
-		
-		
-		return furthestPlayerPawnPosition - furthestOpponentPawnPosition;
+				
+		return furthestPlayerPawnPosition - furthestOpponentPawnPosition 
+				+ playerProtection - opponentProtection + playerWin;
 	
 	};
 	
 	
+	private void checkProtection(Tile t, Tile player, int x, int y) {
+		//***************** Checking protected BLACK pawns ******************//
+		if(t == Tile.BLACK) {
+			if(x < environment.width-1 && y < environment.height-1) {
+				if(board.get(x+1, y+1) == Tile.BLACK) {
+					if(player == Tile.BLACK) {
+						playerProtection++;
+					}
+					else {
+						opponentProtection++;
+					}
+				}
+			}
+			if(x > 1 && y < environment.height-1) {
+				if(board.get(x-1, y+1) == Tile.BLACK) {
+					if(player == Tile.BLACK) {
+						playerProtection++;
+					}
+					else {
+						opponentProtection++;
+					}
+				}
+			}
+		//***************** Checking protected WHITE pawns ******************//
+		} else if(t == Tile.WHITE){
+			if(x > 1 && y > 1) {
+				if(board.get(x-1, y-1) == Tile.WHITE) {
+					if(player == Tile.WHITE) {
+						playerProtection++;
+					}
+					else {
+						opponentProtection++;
+					}				
+				}
+			}
+			if(x < environment.width-1 && y > 1) {
+				if(board.get(x+1, y-1) == Tile.WHITE) {
+					if(player == Tile.WHITE) {
+						playerProtection++;
+					}
+					else {
+						opponentProtection++;
+					}	
+				}
+			}
+		}
+		else return;
+		
+	}
+
+	private void checkWin(Tile t, Tile player, int y) {
+		if(y == environment.height && t == Tile.WHITE) {
+			if(t == player) {
+				playerWin = 100;
+			}
+			else {
+				playerWin = -100;
+			}
+		}
+		
+		if(y == 1 && t == Tile.BLACK) {
+			if(t == player) {
+				playerWin = 100;
+			}
+			else {
+				playerWin = -100;
+			}
+		}
+		
+	}
+
 	public List<Action> legalMoves(Tile player) {
 		
 		if(player == Tile.EMPTY) {
