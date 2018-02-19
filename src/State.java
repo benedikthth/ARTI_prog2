@@ -45,9 +45,12 @@ public class State {
 		int furthestOpponentPawnPosition = (player == Tile.WHITE) ? Integer.MAX_VALUE : Integer.MIN_VALUE;
 		
 		/**
-		 * cuck me
+		 * Initial values.
 		 */
 		int fblack = Integer.MAX_VALUE, fwhite=Integer.MIN_VALUE;
+		
+		int attacksOnWhite = 0;
+		int attacksOnBlack = 0;
 		
 		for(int y = 1; y <= environment.height; y++) {
 			for(int x = 1; x <= environment.width; x++) {
@@ -66,6 +69,10 @@ public class State {
 				
 				if(t==Tile.BLACK) {
 					fblack = Math.min(fblack, y);
+					//get attacks on black.
+					
+					
+					
 				} else {
 					fwhite = Math.max(fwhite, y);
 				}
@@ -87,8 +94,10 @@ public class State {
 		this.furthestBlackPosition = environment.height +1 - fblack;
 		this.furthestWhitePosition = fwhite;
 		
+		
 		//inverse the distance.
 		if(player == Tile.BLACK) {
+			
 			
 			furthestOpponentPawnPosition = fwhite;
 			furthestPlayerPawnPosition = environment.height +1 - fblack;
@@ -272,19 +281,11 @@ public class State {
 	public boolean terminalState() {
 		
 		if(legalMoves(Tile.WHITE).isEmpty()) {
+			System.out.println("```````````.");
+			print();
+			System.out.println("The above state is terminal.");
 			return true;
 		}
-		/*
-		for(int i = 1; i <= environment.width; i++) {
-			if(board.get(i, 1) == Tile.BLACK || board.get(i, environment.height) == Tile.WHITE) {
-				
-				return true;
-			}
-			
-			
-		}
-		*/
-		//board.print();
 		
 		return false;
 		
