@@ -121,7 +121,7 @@ public class State {
 	private void checkProtection(Tile t, Tile player, int x, int y) {
 		//***************** Checking protected BLACK pawns ******************//
 		if(t == Tile.BLACK) {
-			if(x < environment.width-1 && y < environment.height-1) {
+			if(x < environment.width && y < environment.height) {
 				if(board.get(x+1, y+1) == Tile.BLACK) {
 					if(player == Tile.BLACK) {
 						playerProtection++;
@@ -131,7 +131,7 @@ public class State {
 					}
 				}
 			}
-			if(x > 1 && y < environment.height-1) {
+			if(x > 1 && y < environment.height) {
 				if(board.get(x-1, y+1) == Tile.BLACK) {
 					if(player == Tile.BLACK) {
 						playerProtection++;
@@ -153,7 +153,7 @@ public class State {
 					}				
 				}
 			}
-			if(x < environment.width-1 && y > 1) {
+			if(x < environment.width && y > 1) {
 				if(board.get(x+1, y-1) == Tile.WHITE) {
 					if(player == Tile.WHITE) {
 						playerProtection++;
