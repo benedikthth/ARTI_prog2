@@ -3,10 +3,8 @@ import java.util.List;
 public class Environment {
 	
 	public static Environment instance;
-	
-	
-	public int height, width;
-	
+		
+	public int height, width;	
 	
 	public List<String> AvailableActions(State state){
 		return null;

@@ -37,9 +37,7 @@ public class HandWrittenAgent implements Agent {
 		
 		//populate initial state.
 		state = new State();
-		
-		
-		
+			
     }
 
 	public String nextAction(int[] lastMove) {
@@ -61,16 +59,14 @@ public class HandWrittenAgent implements Agent {
    				
 				state = state.ApplyAction(new Action(x1, y1, x2, y2));
 				
-   			}
-   		
+   			}		
    			
     		//System.out.println(state.getScore(Tile.BLACK));
     	}
 		
     	// update turn (above that line it myTurn is still for the previous state)
 		myTurn = !myTurn;
-		if (myTurn) {
-			
+		if (myTurn) {		
 			
 			// TODO: 2. run alpha-beta search to determine the best move
 			/*
