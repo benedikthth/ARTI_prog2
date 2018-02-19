@@ -44,6 +44,10 @@ public class State {
 		int furthestPlayerPawnPosition = (player == Tile.WHITE) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
 		int furthestOpponentPawnPosition = (player == Tile.WHITE) ? Integer.MAX_VALUE : Integer.MIN_VALUE;
 		
+		if(terminalState()) {
+			return checkWin(player);
+		}
+		
 		/**
 		 * Initial values.
 		 */
@@ -58,7 +62,7 @@ public class State {
 				Tile t = board.get(x, y);
 				
 				// check for winning state
-				checkWin(t, player, y);
+				
 				
 				if(t == Tile.EMPTY) {
 					continue;
@@ -164,24 +168,37 @@ public class State {
 		
 	}
 
-	private void checkWin(Tile t, Tile player, int y) {
-		if(y == environment.height && t == Tile.WHITE) {
-			if(t == player) {
-				playerWin = 100;
-			}
-			else {
-				playerWin = -100;
+	private int checkWin(Tile player) {
+		
+		boolean winForBlack =false , winForWhite = false;
+		
+		for(int i = 1; i <= environment.width; i++) {
+			if(board.get(i, 1) == Tile.BLACK) {
+				winForBlack = true;
+				break;
 			}
 		}
 		
-		if(y == 1 && t == Tile.BLACK) {
-			if(t == player) {
-				playerWin = 100;
-			}
-			else {
-				playerWin = -100;
+		for(int t = 1; t <= environment.width; t++) {
+			if(board.get(t, environment.height) == Tile.WHITE) {
+				winForWhite = true;
+				break;
 			}
 		}
+		
+		if(winForBlack && winForWhite) {
+			System.out.println("Both players cannot win at the same time. (state.checkWin)");
+			return -0;
+		}
+		// disadvantage in ties. 
+		if(player == Tile.WHITE) {
+			return (winForWhite)? 100: -100;
+		} else {
+			return (winForBlack)? 100: -100;
+		}
+		
+		
+		
 		
 	}
 
@@ -280,10 +297,16 @@ public class State {
 	//If either B or W has made it's way accross the board, that state is terminal. 
 	public boolean terminalState() {
 		
+		if(legalMoves(Tile.BLACK).isEmpty() ) {
+			
+			return true;
+			
+		}
+		
 		if(legalMoves(Tile.WHITE).isEmpty()) {
-			System.out.println("```````````.");
-			print();
-			System.out.println("The above state is terminal.");
+			//System.out.println("```````````.");
+			//print();
+			//System.out.println("The above state is terminal.");
 			return true;
 		}
 		
