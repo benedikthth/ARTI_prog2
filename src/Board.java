@@ -7,7 +7,6 @@ public interface Board {
 	
 	public Tile get(int x, int y);
 	
-
 	Board clone();
 	
 	/**

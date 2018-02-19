@@ -2,7 +2,6 @@ import java.util.List;
 
 public class Search {
 	
-	
 	// returns a { score, action } my dude. 
 	
 	Tile player, opponent;
@@ -11,8 +10,7 @@ public class Search {
 		this.player = player;
 		this.opponent = opponent;
 	};
-	
-	
+		
 	public Action MinMaxSearch(State state, int depth, boolean maximizing, boolean playerTurn) {
 
 		List<Action> legalMoves;
@@ -24,9 +22,7 @@ public class Search {
 		}
 		
 		Action bestAction = null;
-		
-	
-			
+					
 			if(maximizing) {
 				
 				// select the best score available.
@@ -61,9 +57,7 @@ public class Search {
 					
 				}
 				
-			}
-			
-		
+			}	
 		
 		return bestAction;
 		
@@ -98,14 +92,10 @@ public class Search {
 				} 
 				else {
 					bestScore = Math.min(bestScore, Minimax( state.ApplyAction(a), depth-1, !maximizing, !playerTurn ));
-				}
-				
-				
-			}
+				}			
+			}	
 		
-		
-		return bestScore;
-		
+		return bestScore;	
 	}
 	
 	
@@ -164,12 +154,10 @@ public class Search {
 				alpha = score;
 				bestAction = a;
 			}
-			
-			
+						
 		}
 		
-		return bestAction;
-		
+		return bestAction;		
 		
 	};
 	
@@ -238,31 +226,8 @@ public class Search {
 				if(beta <= alpha ) {
 					break;
 				}
-				
-			}
-			
-			
+			}			
 		}
-		
-		return value;
-		
-		
+		return value;			
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

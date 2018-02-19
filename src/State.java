@@ -16,7 +16,6 @@ public class State {
 	public State(Board cboard) {
 		this.board = cboard.clone();
 	}
-
 	
 	public int furthestWhitePosition, furthestBlackPosition;
 	public int playerProtection;
@@ -63,10 +62,10 @@ public class State {
 				}
 				
 				if(t == player) {				
-					numberOfPawnsForPlayer ++;					
+					numberOfPawnsForPlayer++;					
 				} else {
 					// tile belongs to opponent.				
-					numberOfPawnsForOpponent ++;				
+					numberOfPawnsForOpponent++;				
 				}				
 			}
 		}
@@ -242,10 +241,8 @@ public class State {
 			
 		State newState = this.clone();
 		
-		
 		newState.board = newState.board.applyAction(action);
-			
-		
+				
 		return newState;
 	}
 	
@@ -254,8 +251,7 @@ public class State {
 		
 		// return a new State with the same properties as this one
 		State newState = new State(this.board);
-		return newState;
-		
+		return newState;	
 
 	}
 	
@@ -283,7 +279,5 @@ public class State {
 	public void print() {
 		this.board.print();
 	}
-	
-	
-	
+		
 }

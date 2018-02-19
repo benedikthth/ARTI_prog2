@@ -12,8 +12,7 @@ public class BitsetBoard implements Board {
 	
 	public BitsetBoard() {
 		board = new BitSet[env.width][env.height];
-		
-		
+				
 		for(int x = 0; x < env.width; x++) {
 			for(int y = 0; y < env.height; y++) {
 				
@@ -97,8 +96,7 @@ public class BitsetBoard implements Board {
 		
 		Tile t = get(action.originX, action.originY);
 		
-		if(t == Tile.EMPTY) {
-			
+		if(t == Tile.EMPTY) {			
 			
 			System.out.println("Illegal Move: " + action + " for player tried to move an empty dude");
 			
@@ -137,7 +135,6 @@ public class BitsetBoard implements Board {
 	}
 	
 	
-	
 	@Override
 	public Board clone() {
 		// TODO Auto-generated method stub
@@ -168,11 +165,8 @@ public class BitsetBoard implements Board {
 			break;
 		default:
 			break;
-		}
-		
+		}	
 	}
-	
-	
 	
 	@Override
 	public void put(int x, int y, Tile tile) {
