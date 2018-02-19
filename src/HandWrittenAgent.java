@@ -10,7 +10,6 @@ public class HandWrittenAgent implements Agent {
 	private int playclock; // this is how much time (in seconds) we have before nextAction needs to return a move
 	private boolean myTurn; // whether it is this agent's turn or not
 	private int width, height; // dimensions of the board
-	//int bestVal;
 	Tile myRole;
 	
 	Search adversarySearch = new Search();
@@ -99,22 +98,14 @@ public class HandWrittenAgent implements Agent {
 			System.out.println("SC:: " + state.getScore(myRole)) ;
 			System.out.println("FW: "+this.state.furthestWhitePosition + ", FB: "+ this.state.furthestBlackPosition
 								+ ", PlayerProtection: " + this.state.playerProtection 
-								+ ", OpponentProtection: " + this.state.opponentProtection 
-								+ ", PlayerWin: " + this.state.playerWin);
-			
-			
-			return a.toString();
-			
-		} else {
-			
-			return "noop";
-		
+								+ ", OpponentProtection: " + this.state.opponentProtection);
+						
+			return a.toString();		
+		} else {		
+			return "noop";		
 		}
 	}
 	
-	
-
-
 	// is called when the game is over or the match is aborted
 	@Override
 	public void cleanup() {

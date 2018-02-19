@@ -1,22 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 public class State {
-	
-	//boolean whitePlayerMove;
 	
 	Environment environment  = Environment.GetInstance();;
 
 	//STATES ARE 1 INDEXED
 
 	public Board board;
-	/*
-	List<Action> legalActions;
-	
-	int len;
-	*/
+
 	public State() {	
 		this.board = new BitsetBoard();	
 	}
@@ -29,21 +21,19 @@ public class State {
 	public int furthestWhitePosition, furthestBlackPosition;
 	public int playerProtection;
 	public int opponentProtection;
-	public int playerWin;
 	
 	public int getScore(Tile player) {
 		
 		int numberOfPawnsForPlayer = 0; 
 		int numberOfPawnsForOpponent = 0;
 		playerProtection = 0;
-		opponentProtection = 0;
-		playerWin = 0;
-		
+		opponentProtection = 0;		
 		
 		//the black wants to go down. white up.
 		int furthestPlayerPawnPosition = (player == Tile.WHITE) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
 		int furthestOpponentPawnPosition = (player == Tile.WHITE) ? Integer.MAX_VALUE : Integer.MIN_VALUE;
 		
+		// check for winning state
 		if(terminalState()) {
 			return checkWin(player);
 		}
@@ -53,17 +43,11 @@ public class State {
 		 */
 		int fblack = Integer.MAX_VALUE, fwhite=Integer.MIN_VALUE;
 		
-		int attacksOnWhite = 0;
-		int attacksOnBlack = 0;
-		
 		for(int y = 1; y <= environment.height; y++) {
 			for(int x = 1; x <= environment.width; x++) {
 				
 				Tile t = board.get(x, y);
-				
-				// check for winning state
-				
-				
+										
 				if(t == Tile.EMPTY) {
 					continue;
 				}
@@ -73,36 +57,26 @@ public class State {
 				
 				if(t==Tile.BLACK) {
 					fblack = Math.min(fblack, y);
-					//get attacks on black.
-					
-					
-					
+					//get attacks on black.				
 				} else {
 					fwhite = Math.max(fwhite, y);
 				}
 				
-				if(t == player) {
-					
-					numberOfPawnsForPlayer ++;
-						
+				if(t == player) {				
+					numberOfPawnsForPlayer ++;					
 				} else {
-					// tile belongs to opponent.
-					
-					numberOfPawnsForOpponent ++;
-								
-				}
-				
+					// tile belongs to opponent.				
+					numberOfPawnsForOpponent ++;				
+				}				
 			}
 		}
 		
 		this.furthestBlackPosition = environment.height +1 - fblack;
 		this.furthestWhitePosition = fwhite;
-		
-		
+				
 		//inverse the distance.
 		if(player == Tile.BLACK) {
-			
-			
+				
 			furthestOpponentPawnPosition = fwhite;
 			furthestPlayerPawnPosition = environment.height +1 - fblack;
 			
@@ -113,7 +87,7 @@ public class State {
 		}
 				
 		return furthestPlayerPawnPosition - furthestOpponentPawnPosition 
-				+ playerProtection - opponentProtection + playerWin;
+				+ playerProtection - opponentProtection;
 	
 	};
 	
@@ -196,10 +170,7 @@ public class State {
 		} else {
 			return (winForBlack)? 100: -100;
 		}
-		
-		
-		
-		
+			
 	}
 
 	public List<Action> legalMoves(Tile player) {
@@ -212,9 +183,7 @@ public class State {
 		Tile opponent = (player == Tile.WHITE)? Tile.BLACK: Tile.WHITE;
 		
 		List<Action> legalActions = new ArrayList<Action>();
-		
-		
-		
+			
 		for(int y = 1; y <= environment.height; y++) {
 			for(int x = 1; x <= environment.width; x++) {
 				
@@ -233,17 +202,13 @@ public class State {
 				if(board.get(x, y) != player) {
 					//no possible moves.
 					continue;
-				}
-				
+				}			
 				
 				// x, y = location of a pawn.
-				
-				
+						
 				//white goes up. black goes down.
 				int direction = (player == Tile.WHITE)? 1: -1;
-				
-				
-				
+							
 				//check for diagonal left.
 				//There must be a tile of the type opponent 
 				if(x != 1) {
