@@ -97,7 +97,10 @@ public class HandWrittenAgent implements Agent {
 			
 			this.state.print();
 			System.out.println("SC:: " + state.getScore(myRole)) ;
-			System.out.println("FW: "+this.state.furthestWhitePosition + ", FB: "+ this.state.furthestBlackPosition);
+			System.out.println("FW: "+this.state.furthestWhitePosition + ", FB: "+ this.state.furthestBlackPosition
+								+ ", PlayerProtection: " + this.state.playerProtection 
+								+ ", OpponentProtection: " + this.state.opponentProtection 
+								+ ", PlayerWin: " + this.state.playerWin);
 			
 			
 			return a.toString();

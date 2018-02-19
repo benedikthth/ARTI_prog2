@@ -186,12 +186,8 @@ public class BitsetBoard implements Board {
 
 	@Override
 	public void print() {
-		
-		
-		
-		
+			
 		for(int y = env.height; y >= 1; y--) {
-
 			
 			for(int x = 1; x <= env.width; x++) {
 				
