@@ -89,7 +89,7 @@ public class HandWrittenAgent implements Agent {
 			
 			
 			//Action a = adversarySearch.MinMaxSearch(state.clone(), 10, true, true);
-			Action a = adversarySearch.abSearch(state, 15);
+			Action a = adversarySearch.abSearch(state, 10, this.playclock);
 			
 			State s = state.ApplyAction(a);
 			

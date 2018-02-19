@@ -115,14 +115,15 @@ public class Search {
 	 * @param depth This is the depth to which to explore the tree.
 	 * @return An action representing (hopefully) the best possible action
 	 */
-	public Action abSearch(State initialState, int depth) {
+	public Action abSearch(State initialState, int depth, int playClock) {
 		//this really shouldn't ever be called for the opponent. it just does not make sense.
 		if(initialState.terminalState()) {
 			System.out.println("Search called on a terminal state.");
 			return null;
 		}
 		
-		boolean playerTurn = true;
+		// millisecs = seconds * 1000
+		double TimeLeft = (double) playClock * 1000;
 		
 		/**
 		 * This is the alpha value passed into the recursive helper function
@@ -148,14 +149,24 @@ public class Search {
 		 */
 		Action bestAction = null;
 		
+		double margin = 50;
+		double equalSearch = (TimeLeft-margin) / (double)actions.size();
+		
+		int s = 1;
+		System.out.println(s);
 		for(Action a : actions) {
 			//call our recursive helper.
-			int score = abSearch(initialState.ApplyAction(a), depth, alpha, beta, false, false);
+
+
+			int score = abSearch(initialState.ApplyAction(a), depth, alpha, beta, false, false, equalSearch);
 			
 			if(score > alpha) {
 				alpha = score;
 				bestAction = a;
 			}
+			
+			//we cannot afford more dillydallying.
+			
 			
 		}
 		
@@ -164,7 +175,7 @@ public class Search {
 		
 	};
 	
-	private int abSearch(State state, int depth, int alpha, int beta, boolean maximizingplayer, boolean playerTurn) {
+	private int abSearch(State state, int depth, int alpha, int beta, boolean maximizingplayer, boolean playerTurn, double timeLeft) {
 		
 		/**
 		 * check if our depth is reached or if the current node is terminal;
@@ -180,19 +191,25 @@ public class Search {
 		
 		int value = (maximizingplayer)? Integer.MIN_VALUE: Integer.MAX_VALUE;
 		
+		double equalSearch = timeLeft / (double) legalMoves.size();
+		
 		if(maximizingplayer) {
 			
 			for(Action a : legalMoves) {
 				
+				double cTime = System.currentTimeMillis();
+				
 				value = Math.max(value,
 						abSearch(state.ApplyAction(a),
 								depth-1, alpha,
-								beta, !maximizingplayer, !playerTurn
-								));
+								beta, !maximizingplayer, !playerTurn,
+								equalSearch));
+				
+				timeLeft -= (System.currentTimeMillis() - cTime);
 				
 				alpha = Math.max(alpha, value);
 				
-				if(beta <= alpha) {
+				if(beta <= alpha || timeLeft < cTime) {
 					break;
 				}	
 			}
@@ -201,14 +218,18 @@ public class Search {
 			
 			for(Action a : legalMoves) {
 				
+				double cTime = System.currentTimeMillis();
+				
 				value = Math.min(value, 
 						abSearch(state.ApplyAction(a), depth-1,
-								alpha, beta, !maximizingplayer, !playerTurn
-								));
+								alpha, beta, !maximizingplayer, !playerTurn,
+								equalSearch));
+				
+				timeLeft -= (System.currentTimeMillis() - cTime);
 				
 				beta = Math.min(beta, value);
 				
-				if(beta <= alpha) {
+				if(beta <= alpha || timeLeft < cTime) {
 					break;
 				}
 				
