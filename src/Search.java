@@ -152,20 +152,18 @@ public class Search {
 		double margin = 50;
 		double equalSearch = (TimeLeft-margin) / (double)actions.size();
 		
-		int s = 1;
-		System.out.println(s);
+		
 		for(Action a : actions) {
 			//call our recursive helper.
 
-
 			int score = abSearch(initialState.ApplyAction(a), depth, alpha, beta, false, false, equalSearch);
+			
+			//System.out.println("equalSearch: "+equalSearch + " time: " + (System.currentTimeMillis()-time) );
 			
 			if(score > alpha) {
 				alpha = score;
 				bestAction = a;
 			}
-			
-			//we cannot afford more dillydallying.
 			
 			
 		}
@@ -197,6 +195,10 @@ public class Search {
 			
 			for(Action a : legalMoves) {
 				
+				if(timeLeft < equalSearch) {
+					break;
+				}
+				
 				double cTime = System.currentTimeMillis();
 				
 				value = Math.max(value,
@@ -209,7 +211,7 @@ public class Search {
 				
 				alpha = Math.max(alpha, value);
 				
-				if(beta <= alpha || timeLeft < cTime) {
+				if(beta <= alpha ) {
 					break;
 				}	
 			}
@@ -217,6 +219,10 @@ public class Search {
 		} else {
 			
 			for(Action a : legalMoves) {
+				
+				if(timeLeft < equalSearch) {
+					break;
+				}
 				
 				double cTime = System.currentTimeMillis();
 				
@@ -229,7 +235,7 @@ public class Search {
 				
 				beta = Math.min(beta, value);
 				
-				if(beta <= alpha || timeLeft < cTime) {
+				if(beta <= alpha ) {
 					break;
 				}
 				
